@@ -101,7 +101,7 @@ $( document ).ready(function() {
 	}
 	timerID = setInterval(function() {
 		my_Interval_function();
-	}, 1 * 1000); 
+	}, 2 * 1000); 
 	// clearInterval(timerID);
 	
 	
