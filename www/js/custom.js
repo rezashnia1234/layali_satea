@@ -23,6 +23,7 @@ var quiz_starting_time;
 var next_question;
 var ajax_result;
 var temp_answer;
+var question_id = 0;
 
 $( document ).ready(function() {
 	my_Interval_function = function(){

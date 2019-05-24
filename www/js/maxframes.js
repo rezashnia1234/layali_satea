@@ -57,6 +57,12 @@ myApp.onPageInit('game_page', function (page) {
 		return true;
 	}
 	
+	if(question_id == next_question.id)
+	{
+		mainView.router.loadPage('waiting_page.html');
+		return true;
+	}		
+	
 	$$("#question_title").html(next_question.title);
 	
 	if(next_question.a!=undefined && next_question.a!="")
@@ -146,6 +152,7 @@ myApp.onPageInit('game_page', function (page) {
 		autostart   : false,
 		onComplete  : function () {
 			mainView.router.loadPage('waiting_page.html');
+			question_id = next_question.id;
 			console.log('done');
 		}
 	});
