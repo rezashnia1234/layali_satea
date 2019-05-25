@@ -22,6 +22,7 @@ var my_Interval_function;
 var quiz_starting_time;
 var next_question;
 var ajax_result;
+var ajax_interval="";
 var temp_answer;
 var question_id = 0;
 
@@ -37,8 +38,16 @@ $( document ).ready(function() {
                 networkState = navigator.connection.effectiveType;
 			
 			if (networkState != Connection.NONE) {
-				var url = server_url;			
-				$.ajax({
+				var url = server_url;
+				try {
+					ajax_interval.abort();
+					window.sessionStorage.setItem("we_have_net","true");
+				}catch(err) {
+					// console.log("err");
+					// console.log(err);
+				}
+				
+				ajax_interval = $.ajax({
 					type: "POST",
 					url: url,
 					data: {
@@ -51,6 +60,7 @@ $( document ).ready(function() {
 						if(text.success == "true")
 						{
 							ajax_result	= text.result;
+							// temp_answer="";
 							
 							if(text.result.quiz_status == "no_quiz")
 							{
@@ -70,7 +80,12 @@ $( document ).ready(function() {
 										mainView.router.loadPage('waiting_page.html');
 								}
 								else
-									mainView.router.loadPage('game.html');
+								{
+									if(question_id == next_question.id)
+										mainView.router.loadPage('waiting_page.html');
+									else
+										mainView.router.loadPage('game.html');
+								}
 							}
 							// else if(text.result.quiz_status == "quiz_starting")
 							// {
@@ -85,11 +100,15 @@ $( document ).ready(function() {
 							window.sessionStorage.setItem("we_have_net","false");
 						}
 					},
-					error: function (text)
-					{				  
-						myApp.alert('تحتاج إلى اتصال بالإنترنت لاستخدام هذا التطبيق-0','تحذير', function () {});
-						mainView.router.loadPage('index.html');
-						window.sessionStorage.setItem("we_have_net","false");
+					error: function (err)
+					{
+						if(err.statusText != "abort")
+						{
+							console.log(err);
+							myApp.alert('تحتاج إلى اتصال بالإنترنت لاستخدام هذا التطبيق-0','تحذير', function () {});
+							mainView.router.loadPage('index.html');
+							window.sessionStorage.setItem("we_have_net","false");
+						}
 					}
 				});
 			}
