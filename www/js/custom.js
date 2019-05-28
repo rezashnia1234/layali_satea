@@ -81,9 +81,9 @@ $( document ).ready(function() {
 								}
 								else
 								{
-									if(question_id == next_question.id)
-										mainView.router.loadPage('waiting_page.html');
-									else
+									// if(question_id == next_question.id)
+										// mainView.router.loadPage('waiting_page.html');
+									// else
 										mainView.router.loadPage('game.html');
 								}
 							}
@@ -127,7 +127,12 @@ $( document ).ready(function() {
 	
 	$("#register_btn").click(function() {
 			var url = server_url + "register.php";
-
+			
+			if($("#register_form input[name=name]").val()=="" || $("#register_form input[name=mobile]").val()=="" )
+			{
+				myApp.alert('يرجى تعبئة جميع الحقول المطلوبة','تحذير', function () {});
+				return true;
+			}
 			$.ajax({
 				type: "POST",
 				url: url,
